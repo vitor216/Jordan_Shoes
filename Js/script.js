@@ -2,8 +2,12 @@ const botaoVoltar = document.querySelector('.voltar')
 const sectionDetalhesProduto = document.querySelector('.Produto__detalhes')
 const sectionProdutos = document.querySelector('.produtos')
 
-botaoVoltar.style.display = 'none'
-sectionDetalhesProduto.style.display = 'none'
+const ocultarBotaoEsecao = () => {
+    botaoVoltar.style.display = 'none'
+    sectionDetalhesProduto.style.display = 'none'
+}
+
+ocultarBotaoEsecao()
 
 const formatCurrency = (number) => {
     return number.toLocaleString('pt-BR', {
@@ -20,6 +24,7 @@ const generateCard = async () => {
     const products = await getProducts()
     products.map(product => {
         let card = document.createElement('div')
+        card.id = product.id
         card.classList.add('card__produto')
         card.innerHTML = `
 <figure>
@@ -33,19 +38,46 @@ const generateCard = async () => {
         `
     const listaProdutos = document.querySelector('.lista__produtos')
     listaProdutos.appendChild(card)
-
-    card.addEventListener('click', () => {
-        sectionProdutos.style.display = 'none'
-        botaoVoltar.style.display = 'block'
-        sectionDetalhesProduto.style.display = 'grid'
-        })
-
+    preencherCard(card, products)
     })
 }
 generateCard()
 
 botaoVoltar.addEventListener('click', () => {
     sectionProdutos.style.display = 'flex'
-    botaoVoltar.style.display = 'none'
-    sectionDetalhesProduto.style.display = 'none'
+    ocultarBotaoEsecao()
 })
+
+const preencherDadosProduto = (product) => {
+    const images = document.querySelectorAll('.Produto__detalhes_imagens figure img')
+    const imagesArray = Array.from(images)
+    imagesArray.map( image => {
+        image.src = `./Imagens/${product.image}`
+    })
+    
+    document.querySelector('.detalhes h4').innerHTML = product.product_name
+    document.querySelector('.detalhes h5').innerHTML = product.product_model
+    document.querySelector('.detalhes h6').innerHTML = formatCurrency(product.price)
+
+}
+
+const details = document.querySelector('details')
+details.addEventListener('toggle', () => {
+    const summary = document.querySelector('summary')
+    summary.classList.toggle('icone-expandir')
+    summary.classList.toggle('icone-recolher')
+})
+
+const preencherCard = (card, products) => {
+    card.addEventListener('click', (e) => {
+        sectionProdutos.style.display = 'none'
+        botaoVoltar.style.display = 'block'
+        sectionDetalhesProduto.style.display = 'grid'
+
+        const cardClicado = e.currentTarget
+        const idProduto = cardClicado.id
+        const produtoClicado = products.find( product => product.id == idProduto )
+
+        preencherDadosProduto(produtoClicado)
+        })
+}

@@ -258,6 +258,20 @@ h5 {
 .numeros {
     height: 40px;
     border: 1px solid#ccc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.numeros:hover {
+    border-color: var(--dark);
+    cursor: pointer;
+}
+.radio {
+    display: none;
+}
+.selecionado {
+    border-color: var(--dark);
 }
 .descricao {
     font-size: 16px;
