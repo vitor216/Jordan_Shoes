@@ -6,12 +6,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&
     family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" href="Imagens/favicon.png" />
     <title>Jordan Shoes</title>
 </head>
 <body>
+
+    <header class="topo">
+        <div class="topo__marca">
+            <a href="" class="link_home">
+                <img src="Imagens/icon_jordan.svg" alt="logo do Jordan">
+                <h1>JordanShoes</h1>
+            </a>
+        </div>
+        <div class="btn__carrinho">
+            <span class="material-symbols-outlined icone">
+                shopping_cart
+            </span>
+            <span class="numero_itens">0</span>
+        </div>
+    </header>
+
     <section class="top_fixed">
         Frete grátis para todo o Brasil
     </section>
@@ -73,6 +90,7 @@
             </div>
             <div class="Produto__detalhes_info">
                 <div class="detalhes">
+                    <span>id</span>
                     <h4>nome dp produto</h4>
                     <h5>descrição</h5>
                     <h6>preço</h6>
@@ -156,6 +174,36 @@
                     </a>
                 </details>
             </div>
+        </section>
+        <section class="carrinho">
+            <h2>Carrinho</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Produto</th>
+                        <th>Tamanho</th>
+                        <th>Preço</th>
+                        <th class="coluna_apagar">Apagar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td class="coluna_apagar">-</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>TOTAL</strong></td>
+                        <td class="coluna_total">-</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
         </section>
     </main>
     <script src="Js/script.js"></script>

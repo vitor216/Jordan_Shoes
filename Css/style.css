@@ -14,16 +14,78 @@ body {
     height: 100%;
     font-family: Archivo, sans-serif;
 }
+
+.topo {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    background-color: var(--white_soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topo__marca a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+    text-decoration: none;
+    color: var(--dark);
+}
+
+.topo__marca img {
+    margin-right: 5px;
+}
+
+.topo__marca h1 {
+    font-size: 24px;
+}
+
+.btn__carrinho {
+    position: relative;
+    display: inline-block;
+}
+
+.btn__carrinho span {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btn__carrinho .icone {
+    font-size: 28px;
+}
+
+.btn__carrinho .icone:hover {
+    filter: invert(0.5);
+}
+
+.btn__carrinho .numero_itens {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #f44336;
+    color: #f1f1f1;
+    font-size: 14px;
+    text-align: center;
+    line-height: 18px;
+}
+
 .top_fixed {
     width: 100%;
     height: 64px;
     background-color: var(--white_soft);
     font-weight: 500;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
 }
 .hero {
+    margin-top: 50px;
     width: 100%;
     height: 400px;
     background-image: url('../Imagens/image-michael-jordan.png');
@@ -133,6 +195,10 @@ main {
 h4 {
     font-size: 18px;
     line-height: 28px;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 h5 {
@@ -252,7 +318,7 @@ h5 {
 }
 .tamanhos {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
 }
 .numeros {
@@ -324,7 +390,7 @@ summary {
     background-repeat: no-repeat;
     margin-left: 5px;
 }
-.icon-recolher::after {
+.icone-recolher::after {
     background-image: url('../Imagens/icon_expand_less.svg');
 }
 details {
@@ -382,4 +448,40 @@ details a {
 .voltar:hover {
     cursor: pointer;
     border: 1px solid var(--brand-color);
+}
+.carrinho {
+    display: none;
+    padding-top: 30px;
+    width: 100%;
+    height: 100%;
+    margin-block: 20px;
+    padding-inline: 20px;
+}
+.carrinho h2 {
+    margin-bottom: 10px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+table tr, th, td {
+    border: 1px solid #ccc;
+    height: 40px;
+}
+table td {
+    padding-inline: 10px;
+}
+.coluna_tamanho, .coluna_preco {
+    text-align: right;
+}
+.coluna_apagar {
+    width: 65px;
+    text-align: center;
+}
+.coluna_apagar span:hover {
+    cursor: pointer;
+    color: red;
+}
+tfoot {
+    text-align: right;
 }

@@ -1,6 +1,7 @@
 const botaoVoltar = document.querySelector('.voltar')
 const sectionDetalhesProduto = document.querySelector('.Produto__detalhes')
 const sectionProdutos = document.querySelector('.produtos')
+const sectionHero = document.querySelector('.hero')
 
 const ocultarBotaoEsecao = () => {
     botaoVoltar.style.display = 'none'
@@ -55,6 +56,8 @@ const preencherDadosProduto = (product) => {
         image.src = `./Imagens/${product.image}`
     })
     
+
+    document.querySelector('.detalhes span').innerHTML = product.id
     document.querySelector('.detalhes h4').innerHTML = product.product_name
     document.querySelector('.detalhes h5').innerHTML = product.product_model
     document.querySelector('.detalhes h6').innerHTML = formatCurrency(product.price)
@@ -62,6 +65,7 @@ const preencherDadosProduto = (product) => {
 }
 
 const details = document.querySelector('details')
+
 details.addEventListener('toggle', () => {
     const summary = document.querySelector('summary')
     summary.classList.toggle('icone-expandir')
@@ -81,3 +85,24 @@ const preencherCard = (card, products) => {
         preencherDadosProduto(produtoClicado)
         })
 }
+
+const btnCarrinho = document.querySelector('.btn__carrinho .icone')
+const sectionCarrinho = document.querySelector('.carrinho')
+
+btnCarrinho.addEventListener('click', () => {
+    sectionCarrinho.style.display = 'block'
+    sectionHero.style.display = 'none'
+    sectionProdutos.style.display = 'none'
+    sectionDetalhesProduto.style.display = 'none'
+    botaoVoltar.style.display = 'none'
+})
+
+const btnHome = document.querySelector('.link_home')
+btnHome.addEventListener('click', (e) => {
+    e.preventDefault()
+    sectionCarrinho.style.display = 'none'
+    sectionHero.style.display = 'flex'
+    sectionProdutos.style.display = 'flex'
+    sectionDetalhesProduto.style.display = 'none'
+    botaoVoltar.style.display = 'none'
+})
