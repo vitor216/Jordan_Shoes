@@ -47,6 +47,7 @@ generateCard()
 botaoVoltar.addEventListener('click', () => {
     sectionProdutos.style.display = 'flex'
     ocultarBotaoEsecao()
+    resetarSelecao(radios)
 })
 
 const preencherDadosProduto = (product) => {
@@ -103,6 +104,102 @@ btnHome.addEventListener('click', (e) => {
     sectionCarrinho.style.display = 'none'
     sectionHero.style.display = 'flex'
     sectionProdutos.style.display = 'flex'
-    sectionDetalhesProduto.style.display = 'none'
-    botaoVoltar.style.display = 'none'
+    ocultarBotaoEsecao()
+    resetarSelecao(radios)
 })
+
+const radios = document.querySelectorAll('input[type="radio"]')
+radios.forEach(radio => {
+    radio.addEventListener('change', () => {
+        const label = document.querySelector(`label[for="${radio.id}"]`)
+        label.classList.add('selecionado')
+        radios.forEach(radioAtual => {
+            if (radioAtual !== radio) {
+                const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
+                outroLabel.classList.remove('selecionado')
+            }
+        })
+    })
+})
+
+const resetarSelecao = (radios) => {
+    radios.forEach(radio => {
+        radios.forEach(radioAtual => {
+            if (radioAtual !== radio) {
+                const outroLabel = document.querySelector(`label[for="${radioAtual.id}"]`)
+                outroLabel.classList.remove('selecionado')
+            }
+        })
+    })
+}
+
+const cart = []
+
+const btnAddCarrinho = document.querySelector('.btn__add_cart')
+btnAddCarrinho.addEventListener('click', () => {
+    const produto = {
+        id: document.querySelector('.detalhes span').innerHTML,
+        nome: document.querySelector('.detalhes h4').innerHTML,
+        modelo: document.querySelector('.detalhes h5').innerHTML,
+        preco: document.querySelector('.detalhes h6').innerHTML,
+        tamanho: document.querySelector('input[type="radio"][name="size"]:checked').value
+    }
+    cart.push(produto)
+    ocultarBotaoEsecao()
+    sectionHero.style.display = 'none'
+    sectionCarrinho.style.display = 'block'
+
+    atualizarCarrinho(cart)
+    atualizarNumeroItens()
+})
+
+const corpoTabela = document.querySelector('.carrinho tbody')
+
+const atualizarCarrinho = (cart) => {
+    corpoTabela.innerHTML = ""
+    cart.map(produto => {
+        corpoTabela.innerHTML += `
+            <tr>
+                <td>${produto.id}</td>
+                <td>${produto.nome}</td>
+                <td class='coluna_tamanho'>${produto.tamanho}</td>
+                <td class='coluna_preco'>${produto.preco}</td>
+                <td class='coluna_apagar'>
+                    <span class="material-symbols-outlined" data-id="${produto.id}">
+                        delete
+                    </span>
+                </td>
+            </tr>
+        ` 
+    })
+
+    const total = cart.reduce( (valorAcumulado, item) => {
+        return valorAcumulado + parseFloat(item.preco.replace('R$&nbsp;','').replace('.','').replace(',','.'))
+    }, 0)
+    document.querySelector('.coluna_total').innerHTML = formatCurrency(total)
+
+    acaoBotaoApagar()
+}
+
+const numeroItens = document.querySelector('.numero_itens')
+numeroItens.style.display = 'none'
+const atualizarNumeroItens = () => {
+    (cart.length > 0) ? numeroItens.style.display = 'block' : numeroItens.style.display = 'none'
+    numeroItens.innerHTML = cart.length
+}
+
+const acaoBotaoApagar = () => {
+    const botaoApagar = document.querySelectorAll('.coluna_apagar span')
+    botaoApagar.forEach( botao =>{
+        botao.addEventListener('click', () => {
+            const id = botao.getAttribute('data-id')
+            const posicao = cart.findIndex( item => item.id == id )
+            cart.splice(posicao, 1)
+            atualizarCarrinho(cart)
+        })
+    })
+    atualizarNumeroItens()
+}
+
+const spanId = document.querySelector('.detalhes span')
+spanId.style.display = 'none'
