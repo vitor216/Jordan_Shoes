@@ -1,21 +1,25 @@
+import { formatCurrency } from './utils.js'
+
 const botaoVoltar = document.querySelector('.voltar')
 const sectionDetalhesProduto = document.querySelector('.Produto__detalhes')
 const sectionProdutos = document.querySelector('.produtos')
 const sectionHero = document.querySelector('.hero')
 
+const ocultarElemento = (elemento) => {
+    elemento.style.display = 'none'
+}
+
+const mostrarElemento = (elemento, display='block') => {
+    elemento.style.display = display
+}
+
 const ocultarBotaoEsecao = () => {
-    botaoVoltar.style.display = 'none'
-    sectionDetalhesProduto.style.display = 'none'
+    ocultarElemento(botaoVoltar)
+    ocultarElemento(sectionDetalhesProduto)
 }
 
 ocultarBotaoEsecao()
 
-const formatCurrency = (number) => {
-    return number.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-    })
-}
 const getProducts = async () => {
     const response = await fetch('Js/products.json')
     const data = await response.json()
@@ -75,14 +79,13 @@ details.addEventListener('toggle', () => {
 
 const preencherCard = (card, products) => {
     card.addEventListener('click', (e) => {
-        sectionProdutos.style.display = 'none'
-        botaoVoltar.style.display = 'block'
-        sectionDetalhesProduto.style.display = 'grid'
+        ocultarElemento(sectionProdutos)
+        mostrarElemento(botaoVoltar)
+        mostrarElemento(sectionDetalhesProduto, 'grid')
 
         const cardClicado = e.currentTarget
         const idProduto = cardClicado.id
         const produtoClicado = products.find( product => product.id == idProduto )
-
         preencherDadosProduto(produtoClicado)
         })
 }
@@ -91,21 +94,25 @@ const btnCarrinho = document.querySelector('.btn__carrinho .icone')
 const sectionCarrinho = document.querySelector('.carrinho')
 
 btnCarrinho.addEventListener('click', () => {
-    sectionCarrinho.style.display = 'block'
-    sectionHero.style.display = 'none'
-    sectionProdutos.style.display = 'none'
-    sectionDetalhesProduto.style.display = 'none'
-    botaoVoltar.style.display = 'none'
+    mostrarElemento(sectionCarrinho)
+    ocultarElemento(sectionHero)
+    ocultarElemento(sectionProdutos)
+    ocultarElemento(sectionDetalhesProduto)
+    ocultarElemento(botaoVoltar)
+    ocultarElemento(sectionIdentificacao)
+    ocultarElemento(sectionPagamento)
 })
 
 const btnHome = document.querySelector('.link_home')
 btnHome.addEventListener('click', (e) => {
     e.preventDefault()
-    sectionCarrinho.style.display = 'none'
-    sectionHero.style.display = 'flex'
-    sectionProdutos.style.display = 'flex'
+    ocultarElemento(sectionCarrinho)
+    mostrarElemento(sectionHero, 'flex')
+    mostrarElemento(sectionProdutos, 'flex')
     ocultarBotaoEsecao()
     resetarSelecao(radios)
+    ocultarElemento(sectionIdentificacao)
+    ocultarElemento(sectionPagamento)
 })
 
 const radios = document.querySelectorAll('input[type="radio"]')
@@ -146,9 +153,8 @@ btnAddCarrinho.addEventListener('click', () => {
     }
     cart.push(produto)
     ocultarBotaoEsecao()
-    sectionHero.style.display = 'none'
-    sectionCarrinho.style.display = 'block'
-
+    ocultarElemento(sectionHero)
+    mostrarElemento(sectionCarrinho)
     atualizarCarrinho(cart)
     atualizarNumeroItens()
 })
@@ -177,14 +183,16 @@ const atualizarCarrinho = (cart) => {
         return valorAcumulado + parseFloat(item.preco.replace('R$&nbsp;','').replace('.','').replace(',','.'))
     }, 0)
     document.querySelector('.coluna_total').innerHTML = formatCurrency(total)
+    spanSubTotal.innerHTML = formatCurrency(total)
+    spanTotalCompra.innerHTML = formatCurrency((total + valorFrete) - valorDesconto)
 
     acaoBotaoApagar()
 }
 
 const numeroItens = document.querySelector('.numero_itens')
-numeroItens.style.display = 'none'
+ocultarElemento(numeroItens)
 const atualizarNumeroItens = () => {
-    (cart.length > 0) ? numeroItens.style.display = 'block' : numeroItens.style.display = 'none'
+    numeroItens.style.display = cart.length ? 'block' : 'none'
     numeroItens.innerHTML = cart.length
 }
 
@@ -202,4 +210,107 @@ const acaoBotaoApagar = () => {
 }
 
 const spanId = document.querySelector('.detalhes span')
-spanId.style.display = 'none'
+ocultarElemento(spanId)
+
+let valorFrete = 0
+let valorDesconto = 0
+
+const spanSubTotal = document.querySelector('.sub_total')
+const spanFrete = document.querySelector('.valor_frete')
+const spanDesconto = document.querySelector('.valor_desconto')
+const spanTotalCompra = document.querySelector('.total_compra')
+
+spanFrete.innerHTML = formatCurrency(valorFrete)
+spanDesconto.innerHTML = formatCurrency(valorDesconto)
+
+const sectionIdentificacao = document.querySelector('.identificacao')
+const sectionPagamento = document.querySelector('.pagamento')
+
+ocultarElemento(sectionIdentificacao)
+ocultarElemento(sectionPagamento)
+
+const btnContinuarCarrinho = document.querySelector('.btn_continuar')
+btnContinuarCarrinho.addEventListener('click', () => {
+    ocultarElemento(sectionCarrinho)
+    mostrarElemento(sectionIdentificacao)
+})
+
+const formularioIdentificacao = document.querySelector('.form_identificacao')
+const todosCamposObrigatorios = formularioIdentificacao.querySelectorAll('[required]')
+const todosCampos = formularioIdentificacao.querySelectorAll('input')
+
+const pegarDados = () => {
+    const dados = {}
+    todosCampos.forEach( campo => {
+        dados[campo.id] = campo.value.trim()
+    })
+    return dados
+}
+
+    const validacaoDoFormulario = () => {
+        todosCamposObrigatorios.forEach( campoObrigatorio => {
+            const isEmpty = campoObrigatorio.value.trim() === ''
+            const isNotChecked = campoObrigatorio.type === 'checkbox' && !campoObrigatorio.checked
+
+            if(isEmpty) {
+                campoObrigatorio.classList.add('campo-invalido')
+                campoObrigatorio.nextElementSibling.textContent = `${campoObrigatorio.id} Obrigatorio`
+            } else {
+                campoObrigatorio.classList.add('campo-valido')
+                campoObrigatorio.classList.remove('campo-invalido')
+                campoObrigatorio.nextElementSibling.textContent = ''
+            }
+
+            if(isNotChecked) {
+                campoObrigatorio.parentElement.classList.add('erro')
+            } else {
+                campoObrigatorio.parentElement.classList.remove('erro')
+            }
+        } )
+    }
+
+const btnFinalizarCadastro = document.querySelector('.btn_finalizar_cadastro')
+btnFinalizarCadastro.addEventListener('click', (e) => {
+
+    e.preventDefault()
+
+    validacaoDoFormulario()
+    
+})
+
+    todosCamposObrigatorios.forEach( campo => {
+
+        const emailRegex = /\S+@\S+\.\S+/
+
+        campo.addEventListener('blur', (e) => {
+
+            if(campo.value !== "" && e.target.type !=="email") {
+                campo.classList.add('campo-valido')
+                campo.classList.remove('campo-invalido')
+                campo.nextElementSibling.textContent = ''
+            } else {
+                campo.classList.add('campo-invalido')
+                campo.classList.remove('campo-valido')
+                campo.nextElementSibling.textContent = `${campo.id} é obrigatório`
+            }
+
+            if(emailRegex.test(e.target.value)) {
+                campo.classList.add('campo-valido')
+                campo.classList.remove('campo-invalido')
+                campo.nextElementSibling.textContent = ''
+            }
+
+            if(e.target.type === "checkbox" && !e.target.checked) {
+                campo.parentElement.classList.add('erro')
+            } else{
+                campo.parentElement.classList.remove('erro')
+            }
+    })
+})
+
+const btnFinalizarCompra = document.querySelector('.btn_finalizar_compra')
+btnFinalizarCompra.addEventListener('click', () => {
+    ocultarElemento(sectionPagamento)
+    mostrarElemento(sectionHero, 'flex')
+    mostrarElemento(sectionProdutos, 'flex')
+})

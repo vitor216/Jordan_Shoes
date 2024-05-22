@@ -22,16 +22,26 @@
             </a>
         </div>
         <div class="btn__carrinho">
+            <div class="btn__carrinho_icone">
             <span class="material-symbols-outlined icone">
                 shopping_cart
             </span>
             <span class="numero_itens">0</span>
         </div>
+        <div class="btn__carrinho_user">
+            <span id="btn_open_login" class="material-symbols-outlined icone">
+                account_circle
+            </span>
+            <span id="nome_usuario"></span>
+            <span id="btn_logout">Sair</span>
+        </div>
+    </div>
     </header>
 
     <section class="top_fixed">
         Frete grátis para todo o Brasil
     </section>
+    
     <section class="hero">
         <div class="hero__content">
             <h1>
@@ -204,8 +214,262 @@
                     </tr>
                 </tfoot>
             </table>
+            <div class="carrinho__detalhes">
+                <div class="frete">
+                    <label for="cep2">Prazo de entrega</label>
+                    <div class="input">
+                        <input type="text" id="cep2" placeholder="00000-000" />
+                        <button type="button" class="btn_calcular">Calcular</button>
+                    </div>
+                    <p>Tempo previsto para entrega</p>
+                    <a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" rel="noopener noreferrer">Não sei meu CEP</a>
+                </div>
+                <div class="cupom_desconto">
+                    <label for="cupom">Cupom de Desconto</label>
+                    <div class="input">
+                        <input type="text" id="cupom" />
+                        <button type="button" class="btn_aplicar">Aplicar</button>
+                    </div>
+                    <span class="desconto_cupom"></span>
+                </div>
+                <div class="resumo">
+                    <h3>Resumo</h3>
+                    <ul>
+                        <li>
+                            <span>Valor dos produtos</span>
+                            <span class="sub_total"></span>
+                        </li>
+                        <li>
+                            <span>Frete</span>
+                            <span class="valor_frete"></span>
+                        </li>
+                        <li>
+                            <span>Desconto</span>
+                            <span class="valor_desconto"></span>
+                        </li>
+                        <li>
+                            <span>Total da compra</span>
+                            <span class="total_compra"></span>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn_continuar">Continuar</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="identifique-se">
+            <h2>Identifique-se</h2>
+            <div class="criar_conta">
+                <span class="btn btn_criar_conta">Criar conta</span>
+            </div>
+            ou
+            <div class="entrar">
+                <button class="btn_fazer_login">Fazer login</button>
+            </div>
+        </section>
+
+        <!-- modal logar usuario -->
+        <section class="modal_login hidden">
+
+            <h2>Entrar</h2>
+            <span class="btn_close_login">X</span>
+
+            <form class="form_logar">
+                <div class="input">
+                    <label for="email_login">E-mail</label>
+                    <input type="email" id="email_login" autofocus required />
+                </div>
+                <div class="input">
+                    <label for="senha_login">Senha</label>
+                    <input type="password" id="senha_login" required />
+                </div>
+                <div class="botao">
+                    <button type="submit" class="btn_logar">Entrar</button>
+                </div>
+                <div class="centralizar">
+                    <a href="" class="link_cadastrar">Cadastrar Usuário</a>
+                </div>
+            </form>
+
+        </section>
+        <div class="modal_overlay hidden"></div>
+        <!-- /modal logar usuario -->
+
+        <!-- modal cadastrar usuario -->
+        <section class="modal_cadastrar_usuario hidden">
+
+            <h2>Cadastrar</h2>
+            <span class="btn_close_cadastrar">X</span>
+
+            <form class="form_cadastrar_usuario">
+                <div class="input">
+                    <label for="email_usuario">E-mail</label>
+                    <input type="email" placeholder="user@mail.com" id="email_usuario" autofocus required />
+                </div>
+                <div class="input">
+                    <label for="senha_login">Senha</label>
+                    <input type="password" placeholder="mínimo 5 caracteres" id="senha_usuario" required />
+                </div>
+                <div class="input">
+                    <label for="confirma_senha_login">Confirme a Senha</label>
+                    <input type="password" id="confirma_senha_usuario" required />
+                </div>
+                <div class="botao">
+                    <button type="submit" class="btn_cadastrar">Cadastrar</button>
+                </div>
+                <div class="centralizar">
+                    <span class="form_aviso"></span>
+                </div>
+            </form>
+
+        </section>
+        <div class="modal_overlay_cadastrar hidden"></div>
+        <!-- /modal cadastrar usuario -->
+
+        <section class="identificacao">
+    
+            <h2>Identificação</h2>
+            <p>* campos obrigatórios</p>
+        
+            <form class="form_identificacao">
+                <div class="input">
+                    <label for="nome">Nome completo*</label>
+                    <input type="text" id="nome" class="input" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="email">E-mail*</label>
+                    <input type="email" id="email" class="input" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="tel">Telefone*</label>
+                    <input type="tel" id="tel" class="input" placeholder="99 99999-9999" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="cep1">CEP*</label>
+                    <input type="text" id="cep1" class="input" maxlength="9" placeholder="99999-999" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="endereco">Endereco*</label>
+                    <input type="text" id="endereco" class="input" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="numero">Número*</label>
+                    <input type="text" id="numero" class="input" maxlength="10" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="bairro">Bairro*</label>
+                    <input type="text" id="bairro" class="input" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" class="input" />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="cidade">Cidade*</label>
+                    <input type="text" id="cidade" class="input" required />
+                    <span class="erro"></span>
+                </div>
+                <div class="input">
+                    <label for="estado">Estado*</label>
+                    <!--input type="text" id="estado" class="input" maxlength="2" required /> -->
+                    <select id='estado' name='estado' required>
+                        <option value=''>Selecione um estado</option>
+                        <option value='AC'>Acre</option>
+                        <option value='AL'>Alagoas</option>
+                        <option value='AP'>Amapá</option>
+                        <option value='AM'>Amazonas</option>
+                        <option value='BA'>Bahia</option>
+                        <option value='CE'>Ceará</option>
+                        <option value='DF'>Distrito Federal</option>
+                        <option value='ES'>Espírito Santo</option>
+                        <option value='GO'>Goiás</option>
+                        <option value='MA'>Maranhão</option>
+                        <option value='MT'>Mato Grosso</option>
+                        <option value='MS'>Mato Grosso do Sul</option>
+                        <option value='MG'>Minas Gerais</option>
+                        <option value='PA'>Pará</option>
+                        <option value='PB'>Paraíba</option>
+                        <option value='PR'>Paraná</option>
+                        <option value='PE'>Pernambuco</option>
+                        <option value='PI'>Piauí</option>
+                        <option value='RJ'>Rio de Janeiro</option>
+                        <option value='RN'>Rio Grande do Norte</option>
+                        <option value='RS'>Rio Grande do Sul</option>
+                        <option value='RO'>Rondônia</option>
+                        <option value='RR'>Roraima</option>
+                        <option value='SC'>Santa Catarina</option>
+                        <option value='SP'>São Paulo</option>
+                        <option value='SE'>Sergipe</option>
+                        <option value='TO'>Tocantins</option>
+                    </select>
+                    <span class="erro"></span>
+                </div>
+
+                <div class="bloco">
+                    <input type="checkbox" id="concordo" class="checkbox" value="sim" required />
+                    <span class="erro"></span>
+                    <label for="concordo">Concordo com a Política de Privacidade e os Termos de Uso.*</label>
+                </div>
+                <div class="botao">
+                    <button type="submit" class="btn_finalizar_cadastro">Finalizar cadastro</button>
+                </div>
+            </form>
+        </section>
+        
+        <section class="pagamento">
+            <h2>Pagamento</h2>
+            <p>* campos obrigatórios</p>
+            
+            <h3>Dados do cartão</h3>
+        
+            <form class="form_pagamento">
+                <div class="input">
+                    <label for="numero_cartao">Número do cartão*</label>
+                    <input type="text" id="numero_cartao" class="input" maxlength="16" required />
+                </div>
+                <div class="input">
+                    <label for="nome_impresso">Nome impresso*</label>
+                    <input type="text" id="nome_impresso" class="input" required />
+                </div>
+                <div class="input">
+                    <label for="validade">Validade*</label>
+                    <input type="text" id="validade" class="input" maxlength="5" placeholder="MM/AA" required />
+                </div>
+                <div class="input">
+                    <label for="codigo_seguranca">Código de Seguranca*</label>
+                    <input type="text" id="codigo_seguranca" class="input" maxlength="3" placeholder="CVV" required />
+                </div>
+                <div class="input">
+                    <label for="numero_parcelas">Número de parcelas</label>
+                    <select id="numero_parcelas" required >
+                        <option value="1">À vista</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="bloco">
+                    <input type="checkbox" id="salvar_cartao" class="checkbox" />
+                    <label for="salvar_cartao">Salvar cartão para minhas próximas compras.*</label>
+                </div>
+                <div class="botao">
+                    <button type="submit" class="btn_finalizar_compra">Finalizar compra</button>
+                </div>
+                <div class="bloco">
+                    <p>Ao finalizar a sua compra, você concorda com a nossa Política de trocas e devoluções.</p>
+                </div>
+            </form>
+            
         </section>
     </main>
-    <script src="Js/script.js"></script>
+    <script src="Js/utils.js" type="module"></script>
+    <script src="Js/script.js" type="module"></script>
 </body>
 </html>
