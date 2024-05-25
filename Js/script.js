@@ -248,6 +248,9 @@ const pegarDados = () => {
 }
 
     const validacaoDoFormulario = () => {
+
+        let formularioValido = true
+
         todosCamposObrigatorios.forEach( campoObrigatorio => {
             const isEmpty = campoObrigatorio.value.trim() === ''
             const isNotChecked = campoObrigatorio.type === 'checkbox' && !campoObrigatorio.checked
@@ -255,6 +258,7 @@ const pegarDados = () => {
             if(isEmpty) {
                 campoObrigatorio.classList.add('campo-invalido')
                 campoObrigatorio.nextElementSibling.textContent = `${campoObrigatorio.id} Obrigatorio`
+                formularioValido = false
             } else {
                 campoObrigatorio.classList.add('campo-valido')
                 campoObrigatorio.classList.remove('campo-invalido')
@@ -263,10 +267,12 @@ const pegarDados = () => {
 
             if(isNotChecked) {
                 campoObrigatorio.parentElement.classList.add('erro')
+                formularioValido = false
             } else {
                 campoObrigatorio.parentElement.classList.remove('erro')
             }
-        } )
+        })
+        return formularioValido
     }
 
 const btnFinalizarCadastro = document.querySelector('.btn_finalizar_cadastro')
